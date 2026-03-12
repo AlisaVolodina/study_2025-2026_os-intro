@@ -1,0 +1,145 @@
+---
+## Title
+title: "Лабораторная работа №5"
+subtitle: "Архитектура компьютера"
+license: "Володина Алиса Алексеевна"
+---
+
+## Докладчик
+
+  * Володина Алиса Алексеевна
+  * НКАбд-01-25 
+  * Российский университет дружбы народов им. П. Лумумбы
+  * 1032253521
+
+## Цель работы
+
+Ознакомиться с pass, gopass, native messaging, chezmoi, а также научиться пользоваться утилитами, синхронизовать их с гит
+
+## Задания
+
+Установить дополнительное ПО, установить и настроить pass, настроить интерфейс с браузером, сохранить пароли, установить и настроить chezmoi, выполнить chezmoi на новой машине и выполнить ежедневные операции с chezmoi
+
+## Теоретическое введение
+
+pass — стандартный Unix-менеджер паролей: данные хранятся в ФС в виде файлов, каждый зашифрован GPG-ключом. Структура хранилища произвольна (семантика в голове), но для интеграции со сторонним ПО её нужно закладывать явно.
+
+chezmoi управляет dotfiles. Исходники лежат в ~/.local/share/chezmoi (клон репозитория), локальный конфиг — в ~/.config/chezmoi/chezmoi.toml. Одинаковые на всех машинах файлы копируются без изменений; различающиеся обрабатываются как шаблоны с подстановкой данных из локального конфига.
+
+## Выполнение лабораторной работы
+
+## Установим pass  
+
+![Установка pass](image/1.png){#fig-001 width=70%}
+
+## Установим gopass 
+
+![Установка gopass](image/2.png){#fig-002 width=70%}
+
+## Просмотрим список ключей:
+
+![gpg --list-secret-keys](image/3.png){#fig-003 width=70%}
+
+## Инициализируем хранилище: 
+
+![pass init <gpg-id or email>](image/4.png){#fig-004 width=70%}
+
+## Создадим структуру git:
+
+![pass git init](image/5.png){#fig-005 width=70%}
+
+## Создаем репозиторий 
+
+![новый репозиторий](image/6.png){#fig-006 width=70%}
+
+## Зададим адрес репозитория на хостинге 
+
+![pass git remote add origin git@github.com:<git_username>/<git_repo>.git](image/7.png){#fig-007 width=70%}
+
+## Сделаем прямые изменения 
+
+![Прямые изменения](image/8.png){#fig-008 width=70%}
+
+## Настроим интерфейс с броузером 
+
+![dnf copr enable maximbaz/browserpass](image/9.png){#fig-009 width=70%}
+
+## Добавим новый пароль
+
+![pass insert [OPTIONAL DIR]/[FILENAME]](image/11.png){#fig-011 width=70%}
+
+## Отобразим пароль для указанного имени файла:
+
+![pass [OPTIONAL DIR]/[FILENAME]](image/12.png){#fig-012 width=70%}
+
+## Заменим существующий пароль:
+
+![pass generate --in-place FILENAME](image/13.png){#fig-013 width=70%}
+
+## Установим дополнительное программное обеспечение:
+
+![Установим дополнительное программное обеспечение](image/14.png){#fig-014 width=70%}
+
+## Установим шрифты: 
+
+![sudo dnf install iosevka-fonts iosevka-aile-fonts...](image/18.png){#fig-018 width=70%}
+
+## Установим бинарный файл 
+
+![sh -c "$(wget -qO- chezmoi.io/get)"](image/19.png){#fig-019 width=70%}
+
+## Создадим свой репозиторий для конфигурационных файлов на основе шаблона:
+
+![gh repo create dotfiles --template="yamadharma/dotfiles-template" --private](image/20.png){#fig-020 width=70%}
+
+## Инициализируем chezmoi с нашим репозиторием dotfiles:
+
+![chezmoi init git@github.com:<username>/dotfiles.git](image/21.png){#fig-021 width=70%}
+
+## chezmoi init git@github.com:<username>/dotfiles.git 
+
+![chezmoi diff](image/22.png){#fig-022 width=70%}
+
+## Запустим:
+
+![chezmoi apply -v](image/23.png){#fig-023 width=70%}
+
+## На второй машине инициализируем chezmoi с нашим репозиторием dotfiles:
+
+![chezmoi init https://github.com/<username>/dotfiles.git](image/24.png){#fig-024 width=70%}
+
+## Проверим, какие изменения внесёт chezmoi в домашний каталог, запустив:
+
+![chezmoi diff](image/25.png){#fig-025 width=70%}
+
+## Запустим: 
+
+![chezmoi apply -v](image/26.png){#fig-026 width=70%}
+
+## Получим и применим последние изменения из вашего репозитория: 
+
+![chezmoi update -v](image/27.png){#fig-027 width=70%}
+
+## Можно установить свои dotfiles на новый компьютер с помощью одной команды:
+
+![chezmoi init --apply https://github.com/<username>/dotfiles.git](image/28.png){#fig-028 width=70%}
+
+## Извлечем изменения из репозитория и применим их одной командой:
+
+![chezmoi update](image/29.png){#fig-029 width=70%}
+
+## Извлечем последние изменения из своего репозитория и посмотрим, что изменится, фактически не применяя изменения 
+
+![chezmoi git pull -- --autostash --rebase && chezmoi diff](image/30.png){#fig-030 width=70%}
+
+## Применим изменения 
+
+![chezmoi apply](image/31.png){#fig-031 width=70%}
+
+## добавим в файл конфигурации ~/.config/chezmoi/chezmoi.toml следующее:
+
+![[git]autoCommit = true autoPush = true](image/32.png){#fig-032 width=70%}
+
+## Выводы
+
+Мы ознакомились с pass, gopass, native messaging, chezmoi, научились использовать утилиты, синхронизировать их с git
