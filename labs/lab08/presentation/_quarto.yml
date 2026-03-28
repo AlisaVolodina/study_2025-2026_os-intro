@@ -32,3 +32,11 @@ format:
       - file: _resources/tex/beamer.tex
     babel-lang: russian
     babel-otherlangs: english
+  revealjs: # Html output
+    transition: slide
+    margin: 0.2
+    smaller: true
+    slide-number: true
+    output-ext: html
+    theme: beige
+    logo: _resources/image/logo_rudn.png
